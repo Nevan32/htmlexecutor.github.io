@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Executor</title>
+    <title>Script Executor</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,19 +26,39 @@
     </style>
 </head>
 <body>
-    <h1>HTML Script Executor</h1>
-    <p>Masukkan kode HTML di bawah ini, dan hasilnya akan ditampilkan di bawahnya:</p>
+    <h1>Script Executor</h1>
+    <p>Masukkan kode HTML/JavaScript/Vue.js di bawah ini, dan hasilnya akan ditampilkan di bawahnya:</p>
     
-    <textarea id="htmlCode" placeholder="Masukkan kode HTML di sini..."></textarea><br>
-    <button onclick="executeHTML()">Jalankan</button>
+    <textarea id="codeInput" placeholder="Masukkan kode HTML/JS/Vue di sini..."></textarea><br>
+    <button onclick="executeCode()">Jalankan</button>
 
     <div id="output"></div>
 
     <script>
-        function executeHTML() {
-            const code = document.getElementById('htmlCode').value;
+        function executeCode() {
+            const code = document.getElementById('codeInput').value;
             const output = document.getElementById('output');
-            output.innerHTML = code;
+
+            // Kosongkan output sebelumnya
+            output.innerHTML = '';
+
+            // Buat div container untuk output baru
+            const container = document.createElement('div');
+            output.appendChild(container);
+
+            // Buat elemen script untuk mengeksekusi Vue.js atau JavaScript yang dimasukkan
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.innerHTML = code;
+
+            // Masukkan kode HTML/Vue ke dalam container
+            container.innerHTML = code;
+
+            // Tempelkan script ke body agar JavaScript dijalankan
+            document.body.appendChild(script);
+
+            // Hapus script setelah eksekusi untuk mencegah duplikasi
+            document.body.removeChild(script);
         }
     </script>
 </body>
