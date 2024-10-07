@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Executor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML Script Executor</h1>
+    <p>Masukkan kode HTML di bawah ini, dan hasilnya akan ditampilkan di bawahnya:</p>
+    
+    <textarea id="htmlCode" placeholder="Masukkan kode HTML di sini..."></textarea><br>
+    <button onclick="executeHTML()">Jalankan</button>
+
+    <div id="output"></div>
+
+    <script>
+        function executeHTML() {
+            const code = document.getElementById('htmlCode').value;
+            const output = document.getElementById('output');
+            output.innerHTML = code;
+        }
+    </script>
+</body>
+</html>
