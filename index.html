@@ -1,65 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Script Executor</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Web Code Tester</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         textarea {
             width: 100%;
-            height: 150px;
-        }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
+            height: 30%;
+            margin: 0;
             border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         button {
-            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            display: none;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <h1>Script Executor</h1>
-    <p>Masukkan kode HTML/JavaScript/Vue.js di bawah ini, dan hasilnya akan ditampilkan di bawahnya:</p>
-    
-    <textarea id="codeInput" placeholder="Masukkan kode HTML/JS/Vue di sini..."></textarea><br>
-    <button onclick="executeCode()">Jalankan</button>
 
-    <div id="output"></div>
+<h1>Web Code Tester</h1>
+<textarea id="codeInput" placeholder="Masukkan kode HTML, CSS, dan JavaScript di sini..."></textarea>
+<button id="runButton">Jalankan</button>
 
-    <script>
-        function executeCode() {
-            const code = document.getElementById('codeInput').value;
-            const output = document.getElementById('output');
+<div id="loading">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+</div>
 
-            // Kosongkan output sebelumnya
-            output.innerHTML = '';
+<iframe id="output"></iframe>
 
-            // Buat div container untuk output baru
-            const container = document.createElement('div');
-            output.appendChild(container);
+<script>
+    document.getElementById('runButton').addEventListener('click', function() {
+        document.querySelector('h1').style.display = 'none';
+        document.querySelector('textarea').style.display = 'none';
+        document.getElementById('runButton').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
 
-            // Buat elemen script untuk mengeksekusi Vue.js atau JavaScript yang dimasukkan
-            const script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.innerHTML = code;
+        const code = document.getElementById('codeInput').value;
 
-            // Masukkan kode HTML/Vue ke dalam container
-            container.innerHTML = code;
+        setTimeout(() => {
+            const outputFrame = document.getElementById('output');
+            const output = outputFrame.contentDocument || outputFrame.contentWindow.document;
 
-            // Tempelkan script ke body agar JavaScript dijalankan
-            document.body.appendChild(script);
+            output.open();
+            output.write(`
+                <html>
+                    <head>
+                        <style>
+                            /* CSS Reset untuk menonaktifkan gaya bawaan browser */
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                                appearance: none;
+                                -webkit-appearance: none;
+                                -moz-appearance: none;
+                                outline: none;
+                            }
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                        </style>
+                    </head>
+                    <body>${code}</body>
+                </html>
+            `);
+            output.close();
 
-            // Hapus script setelah eksekusi untuk mencegah duplikasi
-            document.body.removeChild(script);
-        }
-    </script>
+            document.getElementById('loading').style.display = 'none';
+            outputFrame.style.display = 'block';
+        }, 2000);
+    });
+</script>
+
 </body>
 </html>
